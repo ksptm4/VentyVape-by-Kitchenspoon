@@ -9,7 +9,7 @@ html { background-color:#0b1220; }
 body { margin:0; padding:12px; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background-color:#0b1220; color:#e5e7eb; }
 .container { max-width:960px; margin:0 auto; padding:15px 24px; display:flex; flex-wrap:wrap; gap:24px; }
 .left-panel { flex:1; min-width:300px; display:flex; flex-direction:column; gap:6px; }
-.right-panel { min-width:300px; max-width:360px; background-color:#1e293b; border-radius:12px; padding:14px; box-shadow: inset 0 0 10px rgba(56,189,248,0.2); }
+.right-panel { min-width:320px; max-width:380px; background-color:#1e293b; border-radius:12px; padding:14px; box-shadow: inset 0 0 10px rgba(56,189,248,0.2); }
 h1 { text-align:center; color:#38bdf8; margin:0 0 14px; }
 label { display:block; margin-bottom:6px; font-weight:600; color:#cbd5f5; }
 .slider-container, .select-container { margin-bottom:6px; }
@@ -23,7 +23,7 @@ select { width:100%; padding:6px 8px; border-radius:6px; border:1px solid #33415
 @keyframes pulse {0%{opacity:1;}50%{opacity:0.35;}100%{opacity:1;}}
 .summary-container { display:flex; gap:12px; }
 .summary-left, .summary-right { flex:1; }
-.savings { color:#00ff7f; font-weight:700; animation: neonPulse 1s infinite; }
+.savings { color:#00ff7f; font-weight:700; animation: neonPulse 1s infinite; white-space: nowrap; }
 @keyframes neonPulse { 0%{opacity:1;}50%{opacity:0.35;}100%{opacity:1;} }
 footer { margin-top:10px; text-align:center; font-size:0.8rem; color:#64748b; }
 </style>
@@ -148,9 +148,9 @@ footer { margin-top:10px; text-align:center; font-size:0.8rem; color:#64748b; }
   <div class="joints-plan">
     <h3 style="color:#38bdf8;margin-top:0;">Estimated Joints & Cost Comparison</h3>
     <p>Based on usable herb, you could roll approximately <span id="estimatedJoints">0</span> joints (0.3 g each)</p>
-    <p>Cost per Joint: £<span id="costPerJoint">0.00</span></p>
-    <p>Equivalent Cost for Capsules to match joints: £<span id="capsulesForJointsCost">0.00</span></p>
-    <p>Savings by using DryVape Capsules vs joints: <span id="capsulesSavings" class="savings"></span></p>
+    <p class="cost-line">Cost per Joint: £<span id="costPerJoint">0.00</span></p>
+    <p class="cost-line">Equivalent Cost for Capsules to match joints: £<span id="capsulesForJointsCost">0.00</span></p>
+    <p class="cost-line">Savings by using DryVape Capsules vs joints: <span id="capsulesSavings" class="savings"></span></p>
   </div>
 
 </div>
@@ -158,7 +158,7 @@ footer { margin-top:10px; text-align:center; font-size:0.8rem; color:#64748b; }
 </div>
 
 <footer>
-© 2026 VentyCalc — Kitchenspoon 2026 · <strong>R1.40</strong>
+© 2026 VentyCalc — Kitchenspoon 2026 · <strong>R1.42</strong>
 </footer>
 
 <script>
@@ -224,14 +224,18 @@ function updateDashboard(){
   spareCapsules.style.display=spare>0?'block':'none';
   spareCapsules.textContent=`Spare Capsules: ${Math.floor(spare)}`;
 
-  const costG=price/28;
-  costPerGram.textContent=costG.toFixed(2);
-  costPerCapsule.textContent=(capsule*costG).toFixed(2);
-  costPerDraw.textContent=((capsule/draws)*costG).toFixed(2);
-  costWorkday.textContent=(weekdaySelect.value*5*weeks*capsule*costG).toFixed(2);
-  costWeekend.textContent=(weekendSelect.value*2*weeks*capsule*costG).toFixed(2);
-  costTotal.textContent=(totalRequired*capsule*costG).toFixed(2);
-  costStems.textContent=(herb*stork*costG).toFixed(2);
+  // Correct cost calculations
+  const costPerGramValue = price / herb;
+  costPerGram.textContent = costPerGramValue.toFixed(2);
+
+  const costPerCapsuleValue = price / totalCapsAvailable;
+  costPerCapsule.textContent = costPerCapsuleValue.toFixed(2);
+
+  costPerDraw.textContent=((capsule/costPerCapsuleValue)*costPerCapsuleValue).toFixed(2);
+  costWorkday.textContent=(weekdaySelect.value*5*weeks*capsule*costPerGramValue).toFixed(2);
+  costWeekend.textContent=(weekendSelect.value*2*weeks*capsule*costPerGramValue).toFixed(2);
+  costTotal.textContent=(totalRequired*capsule*costPerGramValue).toFixed(2);
+  costStems.textContent=(herb*stork*costPerGramValue).toFixed(2);
 
   weekdayHerb.textContent=(weekdaySelect.value*5*weeks*capsule).toFixed(2);
   weekendHerb.textContent=(weekendSelect.value*2*weeks*capsule).toFixed(2);
@@ -241,21 +245,18 @@ function updateDashboard(){
   const estJoints=Math.floor(usable/jointWeight);
   document.getElementById('estimatedJoints').textContent=estJoints;
 
-  // Cost per joint based on total bag price ÷ total joints
   const totalJoints=Math.floor(herb/jointWeight);
   const bagCost=price;
   const costPerJoint=bagCost/totalJoints;
   document.getElementById('costPerJoint').textContent=costPerJoint.toFixed(2);
 
-  // Equivalent capsule cost = number of joints × cost per capsule
-  const costPerCaps=capsule*costG;
-  const capsulesForJointsCost=estJoints*costPerCaps;
+  const capsulesForJointsCost=estJoints*costPerCapsuleValue;
   document.getElementById('capsulesForJointsCost').textContent=capsulesForJointsCost.toFixed(2);
 
-  // Savings positive, neon green, smiley, percent
-  let savings=capsulesForJointsCost-bagCost;
-  let savingsPercent=(savings/capsulesForJointsCost)*100;
-  capsulesSavings.textContent=`£${Math.abs(savings).toFixed(2)} 🙂 (${Math.abs(savingsPercent).toFixed(0)}%)`;
+  // Savings based on actual price of herbs
+  let moneySaved = bagCost - capsulesForJointsCost;
+  let savingsPercent = (moneySaved / bagCost) * 100;
+  capsulesSavings.textContent = `£${moneySaved.toFixed(2)} 🙂 (${savingsPercent.toFixed(0)}%)`;
 }
 
 document.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateDashboard));
