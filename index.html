@@ -7,258 +7,239 @@
 
 <style>
 html { background-color:#0b1220; }
-body {
-  margin:0;
-  padding:12px;
-  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-  background-color:#0b1220;
-  color:#e5e7eb;
-}
-
-.container {
-  max-width:960px;
-  margin:0 auto;
-  padding:15px 24px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:24px;
-}
-
-.left-panel {
-  flex:1;
-  min-width:300px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.right-panel {
-  min-width:300px;
-  max-width:340px;
-  background-color:#1e293b;
-  border-radius:12px;
-  padding:12px;
-  box-shadow: inset 0 0 10px rgba(56,189,248,0.2);
-}
-
-h1 {
-  text-align:center;
-  color:#38bdf8;
-  margin:0 0 14px 0;
-}
-
-label {
-  display:block;
-  margin-bottom:6px;
-  font-weight:600;
-  color:#cbd5f5;
-}
-
-.slider-container,
-.select-container {
-  margin-bottom:6px;
-}
-
-.value-display {
-  margin-left:6px;
-  font-weight:700;
-  color:#38bdf8;
-}
-
-input[type="range"] {
-  width:100%;
-  cursor:pointer;
-  accent-color:#38bdf8;
-}
-
-select {
-  width:100%;
-  padding:6px 8px;
-  border-radius:6px;
-  border:1px solid #334155;
-  background-color:#020617;
-  color:#e5e7eb;
-}
-
-.result,
-.weekly-plan {
-  margin-top:14px;
-  padding:12px 16px;
-  border-radius:12px;
-  background-color:#020617;
-  color:#bfdbfe;
-  box-shadow:
-    inset 0 0 14px rgba(56,189,248,0.18),
-    0 8px 20px rgba(0,0,0,0.4);
-}
-
-.result p,
-.weekly-plan p {
-  margin:6px 0;
-  line-height:1.2;
-}
-
+body { margin:0; padding:12px; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background-color:#0b1220; color:#e5e7eb; }
+.container { max-width:960px; margin:0 auto; padding:15px 24px; display:flex; flex-wrap:wrap; gap:24px; }
+.left-panel { flex:1; min-width:300px; display:flex; flex-direction:column; gap:6px; }
+.right-panel { min-width:300px; max-width:360px; background-color:#1e293b; border-radius:12px; padding:14px; box-shadow: inset 0 0 10px rgba(56,189,248,0.2); }
+h1 { text-align:center; color:#38bdf8; margin:0 0 14px; }
+label { display:block; margin-bottom:6px; font-weight:600; color:#cbd5f5; }
+.slider-container, .select-container { margin-bottom:6px; }
+.value-display { margin-left:6px; font-weight:700; color:#38bdf8; }
+input[type="range"] { width:100%; cursor:pointer; accent-color:#38bdf8; }
+select { width:100%; padding:6px 8px; border-radius:6px; border:1px solid #334155; background-color:#020617; color:#e5e7eb; font-size:0.95rem; }
+.result, .weekly-plan, .joints-plan { margin-top:14px; padding:12px 16px; border-radius:12px; background-color:#020617; color:#bfdbfe; box-shadow: inset 0 0 14px rgba(56,189,248,0.18), 0 8px 20px rgba(0,0,0,0.4); }
+.result p, .weekly-plan p, .joints-plan p { margin:6px 0; font-size:0.95rem; line-height:1.2;}
 .highlight { font-weight:700; color:#93c5fd; }
-
-.warning {
-  margin-top:5px;
-  font-weight:700;
-  color:#fb7185;
-  animation:pulse 1.2s infinite;
-}
-
-@keyframes pulse {
-  0%{opacity:1;}
-  50%{opacity:0.35;}
-  100%{opacity:1;}
-}
-
-.summary-container {
-  display:flex;
-  gap:12px;
-}
-
-.summary-left,
-.summary-right {
-  flex:1;
-}
-
-footer {
-  margin-top:10px;
-  text-align:center;
-  font-size:0.8rem;
-  color:#64748b;
-}
+.warning { margin-top:5px; font-weight:700; color:#fb7185; animation:pulse 1.2s infinite; }
+@keyframes pulse {0%{opacity:1;}50%{opacity:0.35;}100%{opacity:1;}}
+.summary-container { display:flex; gap:12px; }
+.summary-left, .summary-right { flex:1; }
+footer { margin-top:10px; text-align:center; font-size:0.8rem; color:#64748b; }
 </style>
 </head>
-
 <body>
 
 <h1>VentyCalc – Vape Session Planner</h1>
 
 <div class="container">
 
-  <div class="left-panel">
+<div class="left-panel">
 
-    <div class="slider-container">
-      <label>Capsule Weight (g): <span class="value-display" id="capsuleVal">0.10</span></label>
-      <input type="range" id="capsule" min="0.10" max="0.15" step="0.01" value="0.10">
-    </div>
-
-    <div class="slider-container">
-      <label>Temperature (°C): <span class="value-display" id="tempVal">170</span></label>
-      <input type="range" id="temp" min="170" max="210" step="1" value="170">
-    </div>
-
-    <div class="slider-container">
-      <label>Total Herb Available (g): <span class="value-display" id="herbVal">14.0</span></label>
-      <input type="range" id="herbTotal" min="0.5" max="28" step="0.5" value="14">
-    </div>
-
-    <div class="slider-container">
-      <label>Price of Herbs (£ / $ / €): <span class="value-display" id="priceVal">100</span></label>
-      <input type="range" id="pricePerOunce" min="20" max="240" step="5" value="100">
-    </div>
-
-    <div class="select-container">
-      <label>Stem / Stork Weight (% of total):</label>
-      <select id="storkPercent">
-        <option value="0" selected>0% (vape everything)</option>
-        <option value="0.05">5%</option>
-        <option value="0.10">10%</option>
-        <option value="0.15">15%</option>
-      </select>
-      <div id="storkWarning" class="warning">
-        Select stem/stork percentage unless you plan to vape them you filthy beast, where's your standards? &lt;3
-      </div>
-    </div>
-
-    <div class="select-container">
-      <label>Airflow Setting:</label>
-      <select id="airflow">
-        <option value="0.85">Low</option>
-        <option value="1" selected>Medium</option>
-        <option value="1.15">High</option>
-      </select>
-    </div>
-
-    <div class="result summary-container">
-      <div class="summary-left">
-        <p>Draws per Capsule: <span id="draws">8</span></p>
-        <p>Grams per Draw: <span id="gramsPerDraw">0.05</span> g</p>
-        <p>Total Capsules Available: <span id="totalCapsules">140</span></p>
-        <p>Usable Herb After Stems: <span id="usableHerb">11.90</span> g</p>
-      </div>
-
-      <div class="summary-right">
-        <p>Cost per Gram: <span id="costPerGram">0.00</span></p>
-        <p>Cost per Capsule: <span id="costPerCapsule">0.00</span></p>
-        <p>Cost per Draw: <span id="costPerDraw">0.00</span></p>
-        <p>Cost of Wasted Stems: <span id="costStems">0.00</span></p>
-      </div>
-    </div>
-
+  <div class="slider-container">
+    <label>Capsule Weight (g): <span class="value-display" id="capsuleVal">0.10</span></label>
+    <input type="range" id="capsule" min="0.10" max="0.15" step="0.01" value="0.10">
   </div>
 
-  <div class="right-panel">
-    <h2 style="text-align:center;color:#38bdf8;margin-top:0;">Weekly Planning</h2>
+  <div class="slider-container">
+    <label>Temperature (°C): <span class="value-display" id="tempVal">170</span></label>
+    <input type="range" id="temp" min="170" max="210" step="1" value="170">
+  </div>
 
-    <div class="select-container">
-      <label>Capsules per Workday Session:</label>
-      <select id="weekdaySessions">
-        <option value="0" selected>0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
+  <div class="slider-container">
+    <label>Total Herb Available (g): <span class="value-display" id="herbVal">14.0</span></label>
+    <input type="range" id="herbTotal" min="0.5" max="28" step="0.5" value="14">
+  </div>
+
+  <div class="slider-container">
+    <label>Price of Herbs (£ / $ / €): <span class="value-display" id="priceVal">100</span></label>
+    <input type="range" id="pricePerOunce" min="20" max="240" step="5" value="100">
+  </div>
+
+  <div class="select-container">
+    <label>Stem / Stork Weight (% of total):</label>
+    <select id="storkPercent">
+      <option value="0" selected>0% (vape everything)</option>
+      <option value="0.05">5%</option>
+      <option value="0.10">10%</option>
+      <option value="0.15">15%</option>
+    </select>
+    <div id="storkWarning" class="warning" style="display:block;">
+      Select stem/stork percentage unless you plan to vape them you filthy beast, where's your standards? &lt;3
     </div>
+  </div>
 
-    <div class="select-container">
-      <label>Capsules per Weekend Session:</label>
-      <select id="weekendSessions">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
+  <div class="select-container">
+    <label>Airflow Setting:</label>
+    <select id="airflow">
+      <option value="0.85">Low</option>
+      <option value="1" selected>Medium</option>
+      <option value="1.15">High</option>
+    </select>
+  </div>
+
+  <div class="result summary-container" aria-live="polite">
+    <div class="summary-left">
+      <p>Estimated Draws per Capsule: <span id="draws">8</span></p>
+      <p>Grams per Draw: <span id="gramsPerDraw">0.05</span> g</p>
+      <p id="totalCapsulesLabel">Total Capsules Available: <span id="totalCapsules">0</span></p>
+      <p>Total Herbs Minus Stems: <span id="usableHerb">0.00</span> g</p>
+      <p id="capsShortfall" class="warning" style="display:none;"></p>
     </div>
-
-    <div class="select-container">
-      <label>Total Weeks:</label>
-      <select id="totalWeeks">
-        <option value="1" selected>1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-    </div>
-
-    <div class="weekly-plan">
-      <p>Total Capsules per Workday Weeks: <span id="totalCapsulesWorkday">0</span></p>
-      <p>Total Capsules per Single Weekends: <span id="totalCapsulesWeekend">0</span></p>
-      <p>Total Capsules per Week: <span id="totalCapsulesWeek">0</span></p>
-      <p id="spareCapsules" class="warning" style="display:none;">Spare Capsules: 0</p>
-      <p>Total Herb Used on Workday Weeks: <span id="weekdayHerb">0.00</span> g</p>
-      <p>Total Herb Used on Single Weekends: <span id="weekendHerb">0.00</span> g</p>
-      <p>Total Herb Used Weeks Combined: <span id="weeklyTotal">0.00</span> g</p>
+    <div class="summary-right">
+      <p>Cost per Gram: £<span id="costPerGram">0.00</span></p>
+      <p>Cost per Capsule: £<span id="costPerCapsule">0.00</span></p>
+      <p>Cost per Draw: £<span id="costPerDraw">0.00</span></p>
+      <p>Cost per Workday Weeks: £<span id="costWorkday">0.00</span></p>
+      <p>Cost per Single Weekends: £<span id="costWeekend">0.00</span></p>
+      <p>Total Cost Weeks Combined: £<span id="costTotal">0.00</span></p>
+      <p>Cost of Wasted Stems: £<span id="costStems">0.00</span></p>
     </div>
   </div>
 
 </div>
 
-<footer>© 2026 VentyCalc — Easy on the eyes & ready for your sesh's — Kitchenspoon 2026</footer>
+<div class="right-panel">
+  <h2 style="text-align:center;color:#38bdf8;margin-top:0;">Weekly Planning</h2>
+
+  <label>Capsules per Workday Session:</label>
+  <select id="weekdaySessions">
+    <option value="0" selected>0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+
+  <label>Capsules per Weekend Session:</label>
+  <select id="weekendSessions">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+  </select>
+
+  <label>Total Weeks:</label>
+  <select id="totalWeeks">
+    <option value="1" selected>1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+
+  <div class="weekly-plan">
+    <p>Total Capsules per Workday Weeks: <span id="totalCapsulesWorkday">0</span></p>
+    <p>Total Capsules per Single Weekends: <span id="totalCapsulesWeekend">0</span></p>
+    <p>Total Capsules per Week: <span id="totalCapsulesWeek">0</span></p>
+    <p id="spareCapsules" class="warning" style="display:none;"></p>
+    <p>Total Herb Used on Workday Weeks: <span id="weekdayHerb">0.00</span> g</p>
+    <p>Total Herb Used on Single Weekends: <span id="weekendHerb">0.00</span> g</p>
+    <p>Total Herb Used Weeks Combined: <span id="weeklyTotal">0.00</span> g</p>
+  </div>
+
+  <div class="joints-plan">
+    <h3 style="color:#38bdf8;margin-top:0;">Estimated Joints</h3>
+    <p>Based on usable herb, you could roll approximately <span id="estimatedJoints">0</span> joints (0.3 g each)</p>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 VentyCalc — Kitchenspoon 2026 · <strong>R1.34</strong>
+</footer>
 
 <script>
-/* JS unchanged from last verified working version */
+const capsuleSlider = document.getElementById('capsule');
+const tempSlider = document.getElementById('temp');
+const herbSlider = document.getElementById('herbTotal');
+const priceSlider = document.getElementById('pricePerOunce');
+const airflowSelect = document.getElementById('airflow');
+const storkSelect = document.getElementById('storkPercent');
+const storkWarning = document.getElementById('storkWarning');
+const weekdaySelect = document.getElementById('weekdaySessions');
+const weekendSelect = document.getElementById('weekendSessions');
+const totalWeeksSelect = document.getElementById('totalWeeks');
+
+const totalCapsulesLabel = document.getElementById('totalCapsulesLabel');
+const capsShortfall = document.getElementById('capsShortfall');
+const BASE_DRAWS = 8;
+const jointWeight = 0.3;
+
+function updateDashboard() {
+  const capsule = parseFloat(capsuleSlider.value);
+  const temp = parseInt(tempSlider.value);
+  const herb = parseFloat(herbSlider.value);
+  const price = parseFloat(priceSlider.value);
+  const airflow = parseFloat(airflowSelect.value);
+  const stork = parseFloat(storkSelect.value);
+  const weeks = parseInt(totalWeeksSelect.value);
+
+  capsuleVal.textContent = capsule.toFixed(2);
+  tempVal.textContent = temp;
+  herbVal.textContent = herb.toFixed(1);
+  priceVal.textContent = price;
+
+  const usable = herb * (1 - stork);
+  usableHerb.textContent = usable.toFixed(2);
+  storkWarning.style.display = stork === 0 ? 'block' : 'none';
+
+  let draws = Math.ceil((BASE_DRAWS - (temp - 170)/10) / airflow);
+  draws = Math.max(1, draws);
+  document.getElementById('draws').textContent = draws;
+  gramsPerDraw.textContent = (capsule/draws).toFixed(3);
+
+  const totalCapsAvailable = Math.floor(usable / capsule);
+  totalCapsules.textContent = totalCapsAvailable;
+
+  const totalRequired = weekdaySelect.value * 5 * weeks + weekendSelect.value * 2 * weeks;
+  totalCapsulesWorkday.textContent = weekdaySelect.value * 5 * weeks;
+  totalCapsulesWeekend.textContent = weekendSelect.value * 2 * weeks;
+  totalCapsulesWeek.textContent = totalRequired;
+
+  // Highlight if insufficient capsules
+  if(totalRequired > totalCapsAvailable){
+    totalCapsulesLabel.style.color = '#fb7185';
+    totalCapsulesLabel.style.animation = 'pulse 1.2s infinite';
+    capsShortfall.style.display = 'block';
+    capsShortfall.textContent = `Short by ${totalRequired - totalCapsAvailable} capsule(s)`;
+  } else {
+    totalCapsulesLabel.style.color = '';
+    totalCapsulesLabel.style.animation = '';
+    capsShortfall.style.display = 'none';
+  }
+
+  const spare = totalCapsAvailable - totalRequired;
+  spareCapsules.style.display = spare > 0 ? 'block' : 'none';
+  spareCapsules.textContent = `Spare Capsules: ${Math.floor(spare)}`;
+
+  const costG = price / 28;
+  costPerGram.textContent = costG.toFixed(2);
+  costPerCapsule.textContent = (capsule * costG).toFixed(2);
+  costPerDraw.textContent = ((capsule/draws) * costG).toFixed(2);
+  costWorkday.textContent = (weekdaySelect.value * 5 * weeks * capsule * costG).toFixed(2);
+  costWeekend.textContent = (weekendSelect.value * 2 * weeks * capsule * costG).toFixed(2);
+  costTotal.textContent = (totalRequired * capsule * costG).toFixed(2);
+  costStems.textContent = (herb * stork * costG).toFixed(2);
+
+  weekdayHerb.textContent = (weekdaySelect.value * 5 * weeks * capsule).toFixed(2);
+  weekendHerb.textContent = (weekendSelect.value * 2 * weeks * capsule).toFixed(2);
+  weeklyTotal.textContent = (totalRequired * capsule).toFixed(2);
+
+  // Estimated joints
+  document.getElementById('estimatedJoints').textContent = Math.floor(usable / jointWeight);
+}
+
+document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', updateDashboard));
+updateDashboard();
 </script>
 
 </body>
